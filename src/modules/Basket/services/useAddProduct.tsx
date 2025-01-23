@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { axiosInstance } from "../../../services";
-import { Product } from "./types";
+import { Product } from "../../../types/general";
 
 const addProduct = (data: Product) => {
   return axiosInstance.post<{ data: Product }>(`basket`, data);

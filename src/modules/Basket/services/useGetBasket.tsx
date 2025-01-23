@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { axiosInstance } from "../../../services";
-import { Product } from "./types";
+import { Product } from "../../../types/general";
 
 const getBasket = (): Promise<Product[]> => {
   return axiosInstance.get<Product[]>("basket").then((res) => res);

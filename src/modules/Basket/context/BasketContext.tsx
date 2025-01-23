@@ -2,8 +2,9 @@ import { createContext, FC, useCallback, useContext, useState } from "react";
 import { BasketContextProviderProps, BasketContextType } from "./types";
 import { useAddProduct } from "../services";
 import { useGetBasket } from "../services/useGetBasket";
-import { Product } from "../services/types";
 import { useDeleteBasketItem } from "../services/useDeleteBasketItem";
+import { Product } from "../../../types/general";
+import { useUpdateBasketItem } from "../services/useUpdateBasketItem";
 
 // =============================C R E A T E============================================*
 const BasketContext = createContext<BasketContextType | null>(null);
@@ -27,6 +28,7 @@ export const BasketContextProvider: FC<BasketContextProviderProps> = ({
   const { mutate } = useAddProduct();
   const { data: basket } = useGetBasket();
   const { mutate: deleteBasketItem } = useDeleteBasketItem();
+  const { mutate: updateBasketItem } = useUpdateBasketItem();
   const [openModal, setOpenModal] = useState<boolean>(true);
 
   const addItem = useCallback(
@@ -44,11 +46,34 @@ export const BasketContextProvider: FC<BasketContextProviderProps> = ({
     },
     [deleteBasketItem]
   );
+  const increaseQty = useCallback(
+    (id: string, qty: number) => {
+      console.log("qty+", id, qty);
+      updateBasketItem({ id: id, qty: ++qty });
+    },
+    [updateBasketItem]
+  );
+  const decreaseQty = useCallback(
+    (id: string, qty: number) => {
+      console.log("qty-", id, qty);
+
+      updateBasketItem({ id, qty: --qty });
+    },
+    [updateBasketItem]
+  );
 
   const toggleModal = useCallback(() => {
     setOpenModal((prev) => !prev);
   }, []);
-  const value = { addItem, basket, toggleModal, openModal, deleteItem };
+  const value = {
+    addItem,
+    basket,
+    toggleModal,
+    openModal,
+    deleteItem,
+    increaseQty,
+    decreaseQty,
+  };
 
   return (
     <BasketContext.Provider value={value}>{children}</BasketContext.Provider>

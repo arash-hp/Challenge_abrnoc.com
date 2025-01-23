@@ -8,9 +8,9 @@ import {
   Typography,
 } from "@mui/material";
 import { FC, memo, useCallback } from "react";
-import { Product } from "../../pages/ProductList/services/types";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import { useBasketContext } from "../../modules/Basket/context/BasketContext";
+import { Product } from "../../types/general";
 interface CardProps {
   item: Product;
 }
