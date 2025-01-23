@@ -1,5 +1,6 @@
 import React from "react";
 import { createBrowserRouter } from "react-router-dom";
+import { Providers } from "../providers";
 
 export const lazyHome = React.lazy(() => import("../pages/Home/Home"));
 export const lazyProductList = React.lazy(
@@ -17,11 +18,16 @@ const withSuspense = (
 
 export const router = createBrowserRouter([
   {
-    path: "/",
-    element: withSuspense(lazyHome, "is loading"),
-  },
-  {
-    path: "/product-list",
-    element: withSuspense(lazyProductList, "is loading"),
+    element: <Providers />,
+    children: [
+      {
+        path: "/",
+        element: withSuspense(lazyHome, "is loading"),
+      },
+      {
+        path: "/product-list",
+        element: withSuspense(lazyProductList, "is loading"),
+      },
+    ],
   },
 ]);

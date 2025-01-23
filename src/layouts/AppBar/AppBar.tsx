@@ -6,30 +6,40 @@ import {
   Typography,
 } from "@mui/material";
 import { memo } from "react";
+import { useNavigate } from "react-router-dom";
+import { styles } from "./styles";
 
-const navItems = ["Products", "About", "Contact"];
+const navItems = [
+  {
+    label: "Home",
+    path: "/",
+  },
+  {
+    label: "Products",
+    path: "product-list",
+  },
+];
 
 export const AppBar = memo(() => {
+  const navigate = useNavigate();
   return (
-    <Box sx={{ display: "flex" }}>
-      <MUI_AppBar component="nav">
-        <Toolbar>
-          <Typography
-            variant="h6"
-            component="div"
-            sx={{ flexGrow: 1, display: { xs: "none", sm: "block" } }}
-          >
-            MUI
-          </Typography>
-          <Box sx={{ display: { xs: "none", sm: "block" } }}>
-            {navItems.map((item) => (
-              <Button key={item} sx={{ color: "#fff" }}>
-                {item}
-              </Button>
-            ))}
-          </Box>
-        </Toolbar>
-      </MUI_AppBar>
-    </Box>
+    <MUI_AppBar component="nav" position="sticky">
+      <Toolbar>
+        <Typography variant="h6" component="div" flex={1}>
+          MUI
+        </Typography>
+        <Box>
+          {navItems.map((item, index) => (
+            <Button
+              onClick={() => navigate(item.path)}
+              key={index}
+              sx={styles.button}
+            >
+              {item.label}
+            </Button>
+          ))}
+        </Box>
+      </Toolbar>
+    </MUI_AppBar>
   );
 });
