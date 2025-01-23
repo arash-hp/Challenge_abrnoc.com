@@ -1,3 +1,4 @@
+import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import {
   Badge,
   Box,
@@ -7,12 +8,11 @@ import {
   Toolbar,
   Typography,
 } from "@mui/material";
-import { memo } from "react";
+import { memo, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
-import { styles } from "./styles";
-import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import { Container } from "../../components";
 import { useBasketContext } from "../../modules/Basket/context/BasketContext";
+import { styles } from "./styles";
 
 const navItems = [
   {
@@ -26,8 +26,9 @@ const navItems = [
 ];
 
 export const AppBar = memo(() => {
-  const { basket } = useBasketContext();
+  const { basket, toggleModal } = useBasketContext();
   const navigate = useNavigate();
+
   return (
     <MUI_AppBar component="nav" position="sticky">
       <Container>
@@ -46,11 +47,7 @@ export const AppBar = memo(() => {
               </Button>
             ))}
           </Box>
-          <IconButton
-            size="large"
-            aria-label="show 17 new notifications"
-            color="inherit"
-          >
+          <IconButton size="large" color="inherit" onClick={toggleModal}>
             <Badge badgeContent={basket?.length} color="error">
               <AddShoppingCartIcon />
             </Badge>
