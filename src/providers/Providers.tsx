@@ -1,13 +1,19 @@
-import { Outlet } from "react-router-dom";
-import { AppBar } from "../layouts";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { Outlet } from "react-router-dom";
+import { Container } from "../components";
+import { AppBar } from "../layouts";
+import { Basket } from "../modules";
 
 export const Providers = () => {
   const queryClient = new QueryClient();
   return (
     <QueryClientProvider client={queryClient}>
-      <AppBar />
-      <Outlet />
+      <Basket>
+        <AppBar />
+        <Container>
+          <Outlet />
+        </Container>
+      </Basket>
     </QueryClientProvider>
   );
 };

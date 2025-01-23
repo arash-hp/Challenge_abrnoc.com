@@ -1,15 +1,15 @@
+import { Grid2 } from "@mui/material";
 import { Card } from "../../components";
 import { useGetProducts } from "./services";
 
 const ProductList = () => {
   const { data } = useGetProducts();
-  console.log("res", data);
   return (
-    <>
+    <Grid2 container spacing={2} justifyContent="space-between">
       {data?.map((item) => (
         <Card key={item.id} item={item} />
       ))}
-    </>
+    </Grid2>
   );
 };
 
