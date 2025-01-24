@@ -4,7 +4,7 @@ import { Container } from "../components";
 import { AppBar } from "../layouts";
 import { Basket } from "../modules";
 
-export const Providers = () => {
+export const AppProviders = () => {
   const queryClient = new QueryClient();
   return (
     <QueryClientProvider client={queryClient}>

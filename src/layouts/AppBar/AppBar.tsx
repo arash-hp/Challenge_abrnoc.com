@@ -6,9 +6,8 @@ import {
   IconButton,
   AppBar as MUI_AppBar,
   Toolbar,
-  Typography,
 } from "@mui/material";
-import { memo, useCallback } from "react";
+import { memo } from "react";
 import { useNavigate } from "react-router-dom";
 import { Container } from "../../components";
 import { useBasketContext } from "../../modules/Basket/context/BasketContext";
@@ -33,9 +32,10 @@ export const AppBar = memo(() => {
     <MUI_AppBar component="nav" position="sticky">
       <Container>
         <Toolbar>
-          <Typography variant="h6" component="div" flex={1}>
-            MUI
-          </Typography>
+          <Box sx={styles.logo}>
+            <img src="/logo.svg" alt="Logo" />
+          </Box>
+
           <Box>
             {navItems.map((item, index) => (
               <Button

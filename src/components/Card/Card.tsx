@@ -16,7 +16,8 @@ interface CardProps {
 }
 
 export const Card: FC<CardProps> = memo(({ item }) => {
-  const { addItem } = useBasketContext();
+  const { addItem, basket } = useBasketContext();
+  const isSelected = basket?.find((obj) => obj.productId == item.id);
 
   const onClick = useCallback(() => {
     addItem(item);
@@ -39,7 +40,7 @@ export const Card: FC<CardProps> = memo(({ item }) => {
             justifyContent="space-between"
             alignItems="center"
           >
-            <Typography variant="body2" sx={{ color: "text.secondary" }}>
+            <Typography variant="h5" sx={{ color: "text.secondary" }}>
               $ {item.price}
             </Typography>
             <Button
@@ -48,6 +49,7 @@ export const Card: FC<CardProps> = memo(({ item }) => {
               size="small"
               color="primary"
               endIcon={<AddShoppingCartIcon />}
+              disabled={!!isSelected}
             >
               Add to Cart
             </Button>
