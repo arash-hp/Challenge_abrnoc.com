@@ -1,5 +1,5 @@
 import { memo, ReactNode } from "react";
-import { BasketContextProvider } from "./context/BasketContext";
+import { BasketContextProvider } from "./context/BasketContextProvider";
 import { BasketModal } from "./components";
 
 export const Basket = memo(({ children }: { children: ReactNode }) => {

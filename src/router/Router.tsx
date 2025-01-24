@@ -1,6 +1,6 @@
 import React from "react";
 import { createBrowserRouter } from "react-router-dom";
-import { Providers } from "../providers";
+import { AppProviders } from "../providers";
 
 export const lazyHome = React.lazy(() => import("../pages/Home/Home"));
 export const lazyPayment = React.lazy(() => import("../pages/Payment/Payment"));
@@ -19,7 +19,7 @@ const withSuspense = (
 
 export const router = createBrowserRouter([
   {
-    element: <Providers />,
+    element: <AppProviders />,
     children: [
       {
         path: "/",

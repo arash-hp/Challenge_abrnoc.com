@@ -10,4 +10,5 @@ export interface Product {
   stock: number;
   image: string;
   id: string;
+  productId: string;
 }

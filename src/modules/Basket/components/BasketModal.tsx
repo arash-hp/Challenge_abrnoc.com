@@ -1,6 +1,10 @@
+import AddCircleIcon from "@mui/icons-material/AddCircle";
+import DeleteIcon from "@mui/icons-material/Delete";
+import RemoveCircleIcon from "@mui/icons-material/RemoveCircle";
 import {
   Box,
   Button,
+  CircularProgress,
   IconButton,
   Modal,
   Paper,
@@ -11,14 +15,11 @@ import {
   TableHead,
   TableRow,
 } from "@mui/material";
+import { useCallback } from "react";
+import { useNavigate } from "react-router-dom";
+import { Product } from "../../../types/general";
 import { useBasketContext } from "../context/BasketContext";
 import { styles } from "./styles";
-import { useCallback, useMemo } from "react";
-import AddCircleIcon from "@mui/icons-material/AddCircle";
-import RemoveCircleIcon from "@mui/icons-material/RemoveCircle";
-import DeleteIcon from "@mui/icons-material/Delete";
-import { Product } from "../../../types/general";
-import { useNavigate } from "react-router-dom";
 
 export const BasketModal = () => {
   const { toggleModal, openModal } = useBasketContext();
@@ -36,46 +37,26 @@ export const BasketModal = () => {
   );
 };
 
-function ccyFormat(num: number) {
-  return `${num.toFixed(2)}`;
-}
-
 function priceRow(qty: number, price: number) {
   return qty * price;
 }
 
-// interface Row {
-//   desc: string;
-//   qty: number;
-//   unit: number;
-//   price: number;
-// }
-
-// const rows = [
-//   createRow("Paperclips (Box)", 100, 1.15),
-//   createRow("Paper (Case)", 10, 45.99),
-//   createRow("Waste Basket", 2, 17.99),
-// ];
-
-function subtotal(items: Product & { totalRow: number }[]) {
-  return items?.map(({ totalRow }) => totalRow).reduce((sum, i) => sum + i, 0);
-}
-
-function createRow(name: string, qty: number, price: number) {
-  const totalRow = priceRow(qty, price);
-  return { name, qty, price, totalRow };
+function calculateTotal(items: Product[]) {
+  return items.reduce((sum, { qty, price }) => priceRow(qty, price) + sum, 0);
 }
 
 export default function SpanningTable() {
-  const { basket, deleteItem, increaseQty, decreaseQty } = useBasketContext();
+  const {
+    basket,
+    deleteItem,
+    increaseQty,
+    decreaseQty,
+    isPending,
+    itemIdInprogress,
+  } = useBasketContext();
 
-  const rows = basket?.map((item) =>
-    createRow(item.name, item.qty, item.price)
-  );
+  const invoiceSubtotal = basket ? calculateTotal(basket) : 0;
 
-  const invoiceSubtotal = rows && subtotal(rows);
-
-  console.log("table", rows, invoiceSubtotal);
   const navigate = useNavigate();
   const onPayment = useCallback(() => navigate("payment"), [navigate]);
 
@@ -102,16 +83,25 @@ export default function SpanningTable() {
                 <TableRow key={row.id}>
                   <TableCell>{row.name}</TableCell>
                   <TableCell align="right">
-                    <IconButton
-                      onClick={() => decreaseQty(row.id, row.qty)}
-                      disabled={row.qty === 1}
-                    >
-                      <RemoveCircleIcon />
-                    </IconButton>
-                    {row.qty}
-                    <IconButton onClick={() => increaseQty(row.id, row.qty)}>
-                      <AddCircleIcon />
-                    </IconButton>
+                    {itemIdInprogress === row.id ? (
+                      <CircularProgress size="30px" />
+                    ) : (
+                      <>
+                        <IconButton
+                          onClick={() => decreaseQty(row.id, row.qty)}
+                          disabled={row.qty <= 1 || isPending}
+                        >
+                          <RemoveCircleIcon />
+                        </IconButton>
+                        {row.qty}
+                        <IconButton
+                          onClick={() => increaseQty(row.id, row.qty)}
+                          disabled={isPending}
+                        >
+                          <AddCircleIcon />
+                        </IconButton>
+                      </>
+                    )}
                   </TableCell>
                   <TableCell align="right">{row.price}</TableCell>
                   <TableCell align="right">
@@ -131,10 +121,8 @@ export default function SpanningTable() {
                     continue to payment
                   </Button>
                 </TableCell>
-                <TableCell>Subtotal</TableCell>
-                <TableCell align="right">
-                  {ccyFormat(invoiceSubtotal)}
-                </TableCell>
+                <TableCell>Total</TableCell>
+                <TableCell align="right">{invoiceSubtotal}</TableCell>
               </TableRow>
             </TableBody>
           </Table>
