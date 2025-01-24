@@ -22,6 +22,7 @@ export const BasketContextProvider: FC<BasketContextProviderProps> = ({
 
   const addItem = useCallback(
     (item: Product) => {
+      console.log({ ...item, qty: 1 });
       mutate({ ...item, qty: 1, productId: item.id });
     },
     [mutate]
@@ -29,6 +30,7 @@ export const BasketContextProvider: FC<BasketContextProviderProps> = ({
 
   const deleteItem = useCallback(
     (id: string) => {
+      console.log(id);
       deleteBasketItem(id);
     },
     [deleteBasketItem]
