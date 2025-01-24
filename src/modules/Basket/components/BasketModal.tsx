@@ -14,6 +14,7 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  Typography,
 } from "@mui/material";
 import { useCallback } from "react";
 import { useNavigate } from "react-router-dom";
@@ -64,8 +65,10 @@ export default function SpanningTable() {
     <>
       {!basket?.length ? (
         <Box component={Paper} p={2}>
-          Your basket is currently empty. Start adding items to explore our
-          amazing products!
+          <Typography>
+            Your basket is currently empty. Start adding items to explore our
+            amazing products!
+          </Typography>
         </Box>
       ) : (
         <TableContainer component={Paper}>
@@ -121,8 +124,12 @@ export default function SpanningTable() {
                     continue to payment
                   </Button>
                 </TableCell>
-                <TableCell>Total</TableCell>
-                <TableCell align="right">{invoiceSubtotal}</TableCell>
+                <TableCell>
+                  <Typography variant="subtitle1">Total</Typography>
+                </TableCell>
+                <TableCell align="right">
+                  <Typography variant="h5">${invoiceSubtotal}</Typography>
+                </TableCell>
               </TableRow>
             </TableBody>
           </Table>
