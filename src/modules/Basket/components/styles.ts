@@ -1,7 +1,7 @@
 import { SxRecord } from "../../../types/general";
 
 export const styles: SxRecord<"modal"> = {
-  modal: (theme) => ({
+  modal: () => ({
     position: "absolute",
     top: "50%",
     left: "50%",
